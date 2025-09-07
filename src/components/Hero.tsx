@@ -118,12 +118,16 @@ const Hero = ({ scrollTo }: HeroProps) => {
 
       {/* Main Content */}
       <div className="container mx-auto px-6 text-center relative z-30">
-        <h1 className="text-5xl md:text-7xl font-extrabold text-gray-100 mb-6 leading-tight drop-shadow-[0_0_30px_rgba(155,130,216,0.8)] hover:scale-105 transform transition duration-500">
-          Rachna{" "}
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#9B82D8] via-[#6453B3] to-[#52357B] drop-shadow-[0_0_30px_rgba(100,83,179,0.9)]">
-            Gautam
-          </span>
-        </h1>
+       <h1 className="text-5xl md:text-7xl font-extrabold text-gray-100 mb-6 leading-tight 
+  drop-shadow-[0_0_30px_rgba(155,130,216,0.8)] hover:scale-105 transform transition duration-500">
+  Rachna{" "}
+  <span className="text-transparent bg-clip-text 
+    bg-gradient-to-r from-[#B29BFF] via-[#7A67C9] to-[#648DB3] 
+    drop-shadow-[0_2px_6px_rgba(0,0,0,0.7)]">
+    Gautam
+  </span>
+</h1>
+
         <p className="text-xl md:text-2xl text-gray-200 mb-10 max-w-2xl mx-auto drop-shadow-[0_0_20px_rgba(100,83,179,0.6)]">
           🚀 Full Stack Developer | Turning ideas into scalable apps
         </p>

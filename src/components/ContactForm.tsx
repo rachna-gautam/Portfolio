@@ -1,11 +1,26 @@
-import { Github, Linkedin, Mail, CheckCircle, XCircle, Loader2 } from "lucide-react";
+import {
+  Github,
+  Linkedin,
+  Mail,
+  CheckCircle,
+  XCircle,
+  Loader2,
+} from "lucide-react";
 import { useState } from "react";
 
 const ContactForm = () => {
-  const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
-  const [formData, setFormData] = useState({ name: "", email: "", message: "" });
+  const [status, setStatus] = useState<
+    "idle" | "sending" | "success" | "error"
+  >("idle");
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
@@ -42,7 +57,8 @@ const ContactForm = () => {
             Get In <span className="text-[#648DB3]">Touch</span>
           </h2>
           <p className="text-base sm:text-lg text-gray-600 max-w-3xl mx-auto">
-            I'm always interested in new opportunities and exciting projects. Let's connect!
+            I'm always interested in new opportunities and exciting projects.
+            Let's connect!
           </p>
         </div>
 
@@ -63,7 +79,10 @@ const ContactForm = () => {
               <input type="hidden" name="form-name" value="contact" />
 
               <div>
-                <label htmlFor="name" className="block text-sm font-semibold text-gray-700 mb-2">
+                <label
+                  htmlFor="name"
+                  className="block text-sm font-semibold text-gray-700 mb-2"
+                >
                   Full Name
                 </label>
                 <input
@@ -78,7 +97,10 @@ const ContactForm = () => {
                 />
               </div>
               <div>
-                <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-semibold text-gray-700 mb-2"
+                >
                   Email Address
                 </label>
                 <input
@@ -93,7 +115,10 @@ const ContactForm = () => {
                 />
               </div>
               <div>
-                <label htmlFor="message" className="block text-sm font-semibold text-gray-700 mb-2">
+                <label
+                  htmlFor="message"
+                  className="block text-sm font-semibold text-gray-700 mb-2"
+                >
                   Message
                 </label>
                 <textarea
@@ -151,13 +176,17 @@ const ContactForm = () => {
               </div>
               <div className="text-center sm:text-left">
                 <p className="text-sm text-gray-500 font-medium">Email</p>
-                <p className="text-gray-800 font-semibold">rachnagautam695@gmail.com</p>
+                <p className="text-gray-800 font-semibold">
+                  rachnagautam695@gmail.com
+                </p>
               </div>
             </div>
 
             {/* Social Links */}
             <div className="bg-white rounded-2xl shadow-lg p-6 sm:p-8 border border-[#B2D8CE]/30 flex flex-col sm:flex-row !items-center sm:items-start space-y-4 sm:space-y-0 sm:space-x-4">
-              <h3 className="text-xl font-bold text-gray-800 mb-2 sm:mb-0 flex-shrink-0">Follow Me</h3>
+              <h3 className="text-xl font-bold text-gray-800 mb-2 sm:mb-0 flex-shrink-0">
+                Follow Me
+              </h3>
               <div className="flex space-x-4">
                 <a
                   href="https://www.linkedin.com/in/rachna-gautam"
