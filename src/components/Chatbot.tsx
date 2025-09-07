@@ -6,9 +6,8 @@ const ai = new GoogleGenAI({
   apiKey: import.meta.env.VITE_GEMINI_API_KEY,
 });
 
-// Personal context for Gemini AI
 const PERSONAL_CONTEXT = `
-You are Rachna Gautam's Portfolio Assistant. ONLY answer questions based on the information below. NEVER invent or skip details. Your tone should be friendly, professional, and conversational. Reword facts naturally instead of just listing them.
+You are Rachna Gautam's Portfolio Assistant. ONLY answer questions based on the information below. NEVER invent or skip details. Reword facts naturally instead of just listing them.
 
 Skills:
 - Rachna is skilled in frontend technologies like HTML5, CSS3, JavaScript, TypeScript, React, Next.js, TailwindCSS, and TanStack Query 🚀.
@@ -43,23 +42,14 @@ RULES:
 
 const getGeminiResponse = async (userInput: string): Promise<string> => {
   const prompt = `${PERSONAL_CONTEXT}\n\nUser: ${userInput}\nAssistant:`;
-
   try {
     const response = await ai.models.generateContent({
       model: "gemini-2.5-flash",
       contents: prompt,
     });
-
-    // Extract the string properly
     if (typeof response.text === "string") return response.text;
-
-    if (
-      response.candidates?.length &&
-      typeof response.candidates[0].content === "string"
-    ) {
+    if (response.candidates?.length && typeof response.candidates[0].content === "string")
       return response.candidates[0].content;
-    }
-
     return "Sorry, I couldn't process your question.";
   } catch (error) {
     console.error(error);
@@ -128,12 +118,10 @@ const Chatbot: React.FC = () => {
 
   const handleSendMessage = async () => {
     if (!inputValue.trim()) return;
-
     addUserMessage(inputValue);
     const userQuery = inputValue;
     setInputValue("");
     setIsTyping(true);
-
     setTimeout(async () => {
       const response = await getGeminiResponse(userQuery);
       addBotMessage(response);
@@ -161,9 +149,7 @@ const Chatbot: React.FC = () => {
       {/* Chat Button */}
       <button
         onClick={() => setIsOpen(true)}
-        className={`fixed bottom-6 right-6 z-50 bg-gradient-to-r from-[#52357B] to-[#648DB3] hover:from-[#5459AC] hover:to-[#648DB3] text-white p-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-110 ${
-          isOpen ? "hidden" : "block"
-        }`}
+        className={`fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 bg-gradient-to-r from-[#52357B] to-[#648DB3] hover:from-[#5459AC] hover:to-[#648DB3] text-white p-3 sm:p-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-110 ${isOpen ? "hidden" : "block"}`}
         aria-label="Open chat"
       >
         <MessageCircle size={24} />
@@ -171,7 +157,7 @@ const Chatbot: React.FC = () => {
 
       {/* Chat Window */}
       {isOpen && (
-        <div className="fixed bottom-6 right-6 z-50 w-96 h-[500px] bg-white rounded-2xl shadow-2xl border border-gray-200 flex flex-col overflow-hidden">
+        <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 w-[95vw] max-w-md h-[80vh] sm:h-[500px] bg-white rounded-2xl shadow-2xl border border-gray-200 flex flex-col overflow-hidden transition-all duration-300 ease-in-out">
           {/* Header */}
           <div className="bg-gradient-to-r from-[#52357B] to-[#648DB3] text-white p-4 flex items-center justify-between">
             <div className="flex items-center space-x-3">
@@ -193,12 +179,12 @@ const Chatbot: React.FC = () => {
           </div>
 
           {/* Predefined Questions */}
-          <div className="p-3 border-b border-gray-200 flex flex-wrap gap-2 bg-gray-50">
+          <div className="p-3 border-b border-gray-200 flex flex-wrap gap-2 bg-gray-50 overflow-x-auto">
             {predefinedQuestions.map((q) => (
               <button
                 key={q}
                 onClick={() => handlePredefinedQuestion(q)}
-                className="bg-gradient-to-r from-[#52357B] to-[#648DB3] text-white px-3 py-1 rounded-full text-xs hover:opacity-90 transition-opacity duration-200"
+                className="bg-gradient-to-r from-[#52357B] to-[#648DB3] text-white px-3 py-1 rounded-full text-xs hover:opacity-90 transition-opacity duration-200 whitespace-nowrap"
               >
                 {q}
               </button>
@@ -206,42 +192,14 @@ const Chatbot: React.FC = () => {
           </div>
 
           {/* Messages */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-4">
+          <div className="flex-1 overflow-y-auto p-2 sm:p-4 space-y-4">
             {messages.map((message) => (
-              <div
-                key={message.id}
-                className={`flex ${
-                  message.isBot ? "justify-start" : "justify-end"
-                }`}
-              >
-                <div
-                  className={`max-w-[80%] p-3 rounded-2xl break-words whitespace-pre-line ${
-                    message.isBot
-                      ? "bg-gray-100 text-gray-800"
-                      : "bg-gradient-to-r from-[#52357B] to-[#648DB3] text-white"
-                  }`}
-                  style={{
-                    display: "inline-block", // ensures background wraps the content
-                    wordBreak: "break-word", // break long words to fit bubble
-                    overflowWrap: "anywhere",
-                  }}
-                >
+              <div key={message.id} className={`flex ${message.isBot ? "justify-start" : "justify-end"}`}>
+                <div className={`max-w-[80%] p-3 rounded-2xl break-words whitespace-pre-line ${message.isBot ? "bg-gray-100 text-gray-800" : "bg-gradient-to-r from-[#52357B] to-[#648DB3] text-white"}`} style={{ display: "inline-block", wordBreak: "break-word", overflowWrap: "anywhere" }}>
                   <div className="flex items-start space-x-2">
-                    {message.isBot && (
-                      <Bot
-                        size={16}
-                        className="text-[#52357B] mt-0.5 flex-shrink-0"
-                      />
-                    )}
-                    {!message.isBot && (
-                      <User
-                        size={16}
-                        className="text-white mt-0.5 flex-shrink-0"
-                      />
-                    )}
-                    <div className="text-sm leading-relaxed">
-                      {message.text}
-                    </div>
+                    {message.isBot && <Bot size={16} className="text-[#52357B] mt-0.5 flex-shrink-0" />}
+                    {!message.isBot && <User size={16} className="text-white mt-0.5 flex-shrink-0" />}
+                    <div className="text-sm leading-relaxed">{message.text}</div>
                   </div>
                 </div>
               </div>
@@ -266,27 +224,27 @@ const Chatbot: React.FC = () => {
           </div>
 
           {/* Input */}
-          <div className="p-4 border-t border-gray-200">
-            <div className="flex space-x-2">
-              <input
-                type="text"
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-                onKeyPress={handleKeyPress}
-                placeholder="Ask about skills, projects, or experience..."
-                className="flex-1 px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#648DB3] focus:border-transparent transition-all duration-200 text-sm"
-                disabled={isTyping}
-              />
-              <button
-                onClick={handleSendMessage}
-                disabled={!inputValue.trim() || isTyping}
-                className="bg-gradient-to-r from-[#52357B] to-[#648DB3] hover:from-[#5459AC] hover:to-[#648DB3] text-white p-2 rounded-xl transition-all duration-200 disabled:cursor-not-allowed"
-                aria-label="Send message"
-              >
-                <Send size={16} />
-              </button>
-            </div>
-          </div>
+        {/* Input */}
+<div className="p-3 sm:p-4 border-t border-gray-200 flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
+  <input
+    type="text"
+    value={inputValue}
+    onChange={(e) => setInputValue(e.target.value)}
+    onKeyPress={handleKeyPress}
+    placeholder="Ask about skills, projects, or experience..."
+    className="flex-1 px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#648DB3] focus:border-transparent transition-all duration-200 text-sm"
+    disabled={isTyping}
+  />
+  <button
+    onClick={handleSendMessage}
+    disabled={!inputValue.trim() || isTyping}
+    className="flex items-center justify-center gap-2 bg-gradient-to-r from-[#52357B] to-[#648DB3] hover:from-[#5459AC] hover:to-[#648DB3] text-white px-4 py-2 rounded-xl transition-all duration-200 disabled:cursor-not-allowed"
+  >
+    <Send size={16} />
+    <span className="sm:inline">Send</span>
+  </button>
+</div>
+
         </div>
       )}
     </>
