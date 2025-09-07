@@ -103,32 +103,58 @@ const Navbar = ({ activeSection, scrollTo }: NavbarProps) => {
 
       {/* Mobile Menu Dropdown */}
       {menuOpen && (
-        <div
-          className={`md:hidden fixed top-[64px] left-0 right-0 bg-[#1C0F2A]/95 backdrop-blur-md border-t border-[#52357B]/40 transform transition-all duration-500 ease-in-out origin-top
-    ${menuOpen ? "scale-y-100 opacity-100" : "scale-y-0 opacity-0"}`}
+  <>
+    {/* Overlay */}
+    <div
+      onClick={() => setMenuOpen(false)}
+      className="fixed inset-0 bg-[#1C0F2A]/95 backdrop-blur-md z-40 transition-opacity duration-300"
+    ></div>
+
+    {/* Mobile Menu */}
+    <div className="md:hidden fixed inset-0 z-50 flex flex-col p-6 space-y-6">
+      {/* Close Button */}
+      <div className="flex justify-end">
+        <button
+          onClick={() => setMenuOpen(false)}
+          className="p-2 rounded-lg text-gray-200 hover:text-white transition"
         >
-          <div className="flex flex-col p-4 space-y-4">
-            {links.map(({ id, label, icon: Icon }) => (
-              <button
-                key={id}
-                onClick={() => {
-                  scrollTo(id);
-                  setMenuOpen(false);
-                }}
-                className={`flex items-center space-x-3 px-4 py-2 rounded-lg text-base font-medium transition-all duration-300
-          ${
-            activeSection === id
-              ? "text-[#9B82D8] bg-[#52357B]/30 shadow-md"
-              : "text-gray-200 hover:text-[#B2D8CE] hover:bg-[#52357B]/20"
-          }`}
-              >
-                <Icon size={18} />
-                <span>{label}</span>
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
+          <svg
+            className="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={2}
+            viewBox="0 0 24 24"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      {/* Links */}
+      <div className="flex flex-col mt-6 space-y-4">
+        {links.map(({ id, label, icon: Icon }) => (
+          <button
+            key={id}
+            onClick={() => {
+              scrollTo(id);
+              setMenuOpen(false);
+            }}
+            className={`flex items-center space-x-3 px-4 py-3 rounded-lg text-lg font-medium transition-all duration-300
+              ${
+                activeSection === id
+                  ? "text-[#9B82D8] bg-[#52357B]/30 shadow-md"
+                  : "text-gray-200 hover:text-[#B2D8CE] hover:bg-[#52357B]/20"
+              }`}
+          >
+            <Icon size={20} />
+            <span>{label}</span>
+          </button>
+        ))}
+      </div>
+    </div>
+  </>
+)}
+
     </nav>
   );
 };
