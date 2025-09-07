@@ -15,19 +15,29 @@ const Navbar = ({ activeSection, scrollTo }: NavbarProps) => {
   ];
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-sm border-b border-gray-100">
+    <nav className="fixed top-0 left-0 right-0 z-50 
+      bg-gradient-to-r from-[#2B1B3B]/90 via-[#1C0F2A]/85 to-[#2B1B3B]/90 
+      backdrop-blur-md shadow-lg border-b border-[#52357B]/40">
       <div className="container mx-auto px-6 py-4 flex items-center justify-between">
-        <div className="text-xl font-bold text-gray-800">Rachna Gautam</div>
+        {/* Logo */}
+        <div className="text-2xl font-extrabold text-transparent bg-clip-text 
+          bg-gradient-to-r from-[#9B82D8] via-[#6453B3] to-[#52357B] 
+          drop-shadow-[0_0_15px_rgba(155,130,216,0.7)] tracking-wide cursor-pointer">
+          Rachna Gautam
+        </div>
+
+        {/* Nav Links */}
         <div className="hidden md:flex space-x-8">
           {links.map(({ id, label, icon: Icon }) => (
             <button
               key={id}
               onClick={() => scrollTo(id)}
-              className={`flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-300 ${
-                activeSection === id
-                  ? "text-teal-600 bg-teal-50"
-                  : "text-gray-600 hover:text-teal-600 hover:bg-teal-50"
-              }`}
+              className={`flex items-center space-x-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300
+                ${
+                  activeSection === id
+                    ? "text-[#9B82D8] bg-[#52357B]/30 shadow-md shadow-[#9B82D8]/30 scale-105"
+                    : "text-gray-300 hover:text-[#B2D8CE] hover:bg-[#52357B]/20 hover:scale-105"
+                }`}
             >
               <Icon size={16} />
               <span>{label}</span>
