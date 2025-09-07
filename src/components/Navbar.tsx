@@ -23,7 +23,7 @@ const Navbar = ({ activeSection, scrollTo }: NavbarProps) => {
         <div className="text-2xl font-extrabold text-transparent bg-clip-text 
           bg-gradient-to-r from-[#9B82D8] via-[#6453B3] to-[#52357B] 
           drop-shadow-[0_0_15px_rgba(155,130,216,0.7)] tracking-wide cursor-pointer">
-          Rachna Gautam
+          RG
         </div>
 
         {/* Nav Links */}

@@ -1,8 +1,6 @@
 import { Github, Linkedin, Mail, CheckCircle, XCircle, Loader2 } from "lucide-react";
 import { useState } from "react";
 
-const GOOGLE_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSeXOjtcoRCcKINStdrckFtMnptC9epI-JgOuffqx1kz2SbqeQ/viewform";
-
 const ContactForm = () => {
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
@@ -11,21 +9,28 @@ const ContactForm = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setStatus("sending");
 
-    // Construct prefilled URL for Google Form
-    const url = `${GOOGLE_FORM_URL}?entry.1678928469=${encodeURIComponent(formData.name)}&entry.236762137=${encodeURIComponent(formData.email)}&entry.1471185522=${encodeURIComponent(formData.message)}`;
+    try {
+      const form = e.currentTarget;
+      const formDataObj = new FormData(form);
 
-    // Open Google Form in new tab
-    window.open(url, "_blank");
+      await fetch("/", {
+        method: "POST",
+        body: new URLSearchParams(formDataObj as any).toString(),
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      });
 
-    setTimeout(() => {
       setStatus("success");
       setFormData({ name: "", email: "", message: "" });
       setTimeout(() => setStatus("idle"), 3000);
-    }, 1000); // simulate sending
+    } catch (err) {
+      console.error(err);
+      setStatus("error");
+      setTimeout(() => setStatus("idle"), 3000);
+    }
   };
 
   return (
@@ -48,7 +53,15 @@ const ContactForm = () => {
             <h3 className="text-2xl font-bold text-gray-800 mb-6 text-center sm:text-left">
               Send Message
             </h3>
-            <form className="space-y-5" onSubmit={handleSubmit}>
+            <form
+              name="contact"
+              method="POST"
+              data-netlify="true"
+              onSubmit={handleSubmit}
+              className="space-y-5"
+            >
+              <input type="hidden" name="form-name" value="contact" />
+
               <div>
                 <label htmlFor="name" className="block text-sm font-semibold text-gray-700 mb-2">
                   Full Name
@@ -146,13 +159,24 @@ const ContactForm = () => {
             <div className="bg-white rounded-2xl shadow-lg p-6 sm:p-8 border border-[#B2D8CE]/30 flex flex-col sm:flex-row !items-center sm:items-start space-y-4 sm:space-y-0 sm:space-x-4">
               <h3 className="text-xl font-bold text-gray-800 mb-2 sm:mb-0 flex-shrink-0">Follow Me</h3>
               <div className="flex space-x-4">
-                <a href="https://www.linkedin.com/in/rachna-gautam" target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-[#5459AC] hover:bg-[#52357B] rounded-xl flex items-center justify-center transition-all duration-300 transform hover:scale-110">
+                <a
+                  href="https://www.linkedin.com/in/rachna-gautam"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-12 h-12 bg-[#5459AC] hover:bg-[#52357B] rounded-xl flex items-center justify-center transition-all duration-300 transform hover:scale-110"
+                >
                   <Linkedin className="text-white" size={20} />
                 </a>
-                <a href="https://github.com/rachna-gautam" className="w-12 h-12 bg-[#648DB3] hover:bg-[#5459AC] rounded-xl flex items-center justify-center transition-all duration-300 transform hover:scale-110">
+                <a
+                  href="https://github.com/rachna-gautam"
+                  className="w-12 h-12 bg-[#648DB3] hover:bg-[#5459AC] rounded-xl flex items-center justify-center transition-all duration-300 transform hover:scale-110"
+                >
                   <Github className="text-white" size={20} />
                 </a>
-                <a href="mailto:rachnagautam695@gmail.com" className="w-12 h-12 bg-[#B2D8CE] hover:bg-[#648DB3] rounded-xl flex items-center justify-center transition-all duration-300 transform hover:scale-110">
+                <a
+                  href="mailto:rachnagautam695@gmail.com"
+                  className="w-12 h-12 bg-[#B2D8CE] hover:bg-[#648DB3] rounded-xl flex items-center justify-center transition-all duration-300 transform hover:scale-110"
+                >
                   <Mail className="text-white" size={20} />
                 </a>
               </div>
